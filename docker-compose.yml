@@ -19,13 +19,13 @@ services:
     container_name: radsolutions_db
     restart: always
     environment:
-      POSTGRES_DB: radsolutions_db
-      POSTGRES_USER: radsolutions_user
-      POSTGRES_PASSWORD: radsolutions_pass
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "${DATABASE_PORT}:5432"
 
 volumes:
   postgres_data:
