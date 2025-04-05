@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 def main(request):
-    data = {
-        "mensaje": "Hola desde RadSolutions"
+    context = {
+        "titulo": "Página Principal",
+        "mensaje": "Bienvenido a RadSolutions Reports"
     }
-    return JsonResponse(data)
+    return render(request, 'main.html', context)
 
