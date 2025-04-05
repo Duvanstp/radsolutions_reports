@@ -1,4 +1,4 @@
-.PHONY: run migrate makemigrations shell dbshell test clean build up down db web logs restart restart-web restart-db format lint
+.PHONY: run migrate makemigrations test clean build up down db web logs restart restart-web restart-db format lint docker-migrate docker-makemigrations docker-createsuperuser setup
 
 run:
 	gunicorn --bind 0.0.0.0:8000 app_server.wsgi:application
@@ -8,12 +8,6 @@ migrate:
 
 makemigrations:
 	python manage.py makemigrations
-
-shell:
-	python manage.py shell
-
-dbshell:
-	python manage.py dbshell
 
 test:
 	python manage.py test
@@ -51,6 +45,22 @@ clean:
 	find . -type f -name "*.pyo" -delete
 	find . -type f -name "*.pyd" -delete
 
+# Comandos Docker para migraciones
+docker-migrate:
+	docker-compose exec web python manage.py migrate
+
+docker-makemigrations:
+	docker-compose exec web python manage.py makemigrations
+
+# Crear superusuario
+docker-createsuperuser:
+	docker-compose exec web python manage.py createsuperuser
+
+# Configuración completa del sistema
+setup: build up docker-makemigrations docker-migrate
+	@echo "Sistema iniciado y configurado correctamente."
+	@echo "Para crear un superusuario, ejecuta: make docker-createsuperuser"
+
 # Desarrollo
 lint:
 	pip install flake8
@@ -66,8 +76,6 @@ help:
 	@echo " run              - Ejecuta el servidor de desarrollo"
 	@echo " migrate          - Aplica migraciones pendientes"
 	@echo " makemigrations   - Crea nuevas migraciones"
-	@echo " shell            - Inicia shell de Django"
-	@echo " dbshell          - Inicia shell de base de datos"
 	@echo " test             - Ejecuta tests"
 	@echo " build            - Construye contenedores Docker"
 	@echo " up               - Inicia servicios con Docker en modo desconectado"
@@ -79,5 +87,9 @@ help:
 	@echo " restart-web      - Reinicia solo el servicio web"
 	@echo " restart-db       - Reinicia solo el servicio de base de datos"
 	@echo " clean            - Elimina archivos temporales"
+	@echo " docker-migrate   - Ejecuta migraciones dentro del contenedor Docker"
+	@echo " docker-makemigrations - Crea migraciones dentro del contenedor Docker"
+	@echo " docker-createsuperuser - Crea un superusuario dentro del contenedor Docker"
+	@echo " setup            - Configura todo el sistema (build, up, migraciones)"
 	@echo " lint             - Ejecuta flake8 para verificar estilo"
 	@echo " format           - Formatea código con black"
