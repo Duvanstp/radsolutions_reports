@@ -52,25 +52,22 @@ docker-migrate:
 docker-makemigrations:
 	docker-compose exec web python manage.py makemigrations
 
-# Crear superusuario
 docker-createsuperuser:
 	docker-compose exec web python manage.py createsuperuser
 
-# Configuración completa del sistema
 setup: build up docker-makemigrations docker-migrate
 	@echo "Sistema iniciado y configurado correctamente."
 	@echo "Para crear un superusuario, ejecuta: make docker-createsuperuser"
 
-# Desarrollo
 lint:
-	pip install flake8
 	flake8 .
+	isort . --check --profile black
 
 format:
-	pip install black
 	black .
+	isort .
+	flake8 .
 
-# Ayuda
 help:
 	@echo "Comandos disponibles:"
 	@echo " run              - Ejecuta el servidor de desarrollo"
