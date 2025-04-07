@@ -165,16 +165,17 @@ class ReportAPITest(TestCase):
             "description": "Descripción actualizada",
         }
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.status_code, 302)
+        
+        report.refresh_from_db()
+        self.assertEqual(report.title, "Título actualizado")
+        self.assertEqual(report.description, "Descripción actualizada")
 
         with open(self.temp_file.name, "rb") as pdf:
             data["pdf_file"] = pdf
             response = self.client.post(url, data)
             self.assertEqual(response.status_code, 302)
-
-        report.refresh_from_db()
-        self.assertEqual(report.title, "Título actualizado")
-        self.assertEqual(report.description, "Descripción actualizada")
 
     def test_report_delete_view(self):
         with open(self.temp_file.name, "rb") as pdf:
