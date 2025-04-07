@@ -108,26 +108,20 @@ class ReportAPITest(TestCase):
 
     def test_report_list_view(self):
         """Test que la vista de lista de informes funciona correctamente (si existe)"""
-        try:
-            url = reverse("report-list")
-            response = self.client.get(url)
-            self.assertEqual(response.status_code, 200)
-        except:
-            # Si la vista no existe, la prueba se pasa
-            self.assertTrue(True)
+        url = reverse("report-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_report_creation_view(self):
         """Test que la vista de creación de informes funciona correctamente (si existe)"""
-        try:
-            url = reverse("report-create")
-            with open(self.temp_file.name, "rb") as pdf:
-                data = {
-                    "title": "Nuevo informe de prueba",
-                    "description": "Descripción del nuevo informe",
-                    "pdf_file": pdf,
-                }
-                response = self.client.post(url, data)
-                self.assertEqual(response.status_code, 302)
-                self.assertEqual(Report.objects.count(), 1)
-        except:
-            self.assertTrue(True)
+        url = reverse("report-create")
+        with open(self.temp_file.name, "rb") as pdf:
+            data = {
+                "title": "Nuevo informe de prueba",
+                "description": "Descripción del nuevo informe",
+                "pdf_file": pdf,
+            }
+            response = self.client.post(url, data)
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(Report.objects.count(), 1)
+        self.assertTrue(True)

@@ -44,7 +44,6 @@ jobs:
     
     - name: Build Docker containers using make
       run: |
-        make build
         make up
     
     - name: Run linting checks
