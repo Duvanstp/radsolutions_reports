@@ -1,9 +1,11 @@
-from django.test import TestCase
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.urls import reverse
-from .models import User, Report
-import tempfile
 import os
+import tempfile
+
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+from django.urls import reverse
+
+from .models import Report, User
 
 
 class UserModelTest(TestCase):
@@ -13,7 +15,7 @@ class UserModelTest(TestCase):
             email="test@example.com",
             password="testpassword",
             first_name="Test",
-            last_name="User"
+            last_name="User",
         )
 
     def test_user_creation(self):
@@ -38,21 +40,21 @@ class ReportModelTest(TestCase):
             email="test@example.com",
             password="testpassword",
             first_name="Test",
-            last_name="User"
+            last_name="User",
         )
-        
+
         # Crear un archivo PDF temporal para las pruebas
-        self.temp_file = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
+        self.temp_file = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
         self.temp_file.write(b"contenido de prueba del PDF")
         self.temp_file.close()
-        
+
         # Crear un informe de prueba
-        with open(self.temp_file.name, 'rb') as pdf:
+        with open(self.temp_file.name, "rb") as pdf:
             self.report = Report.objects.create(
                 user=self.user,
                 title="Informe de prueba",
                 description="Esta es una descripción de prueba",
-                pdf_file=SimpleUploadedFile("test.pdf", pdf.read())
+                pdf_file=SimpleUploadedFile("test.pdf", pdf.read()),
             )
 
     def tearDown(self):
@@ -88,18 +90,18 @@ class ReportAPITest(TestCase):
             email="test@example.com",
             password="testpassword",
             first_name="Test",
-            last_name="User"
+            last_name="User",
         )
-        
-        self.temp_file = tempfile.NamedTemporaryFile(suffix='.pdf', delete=False)
+
+        self.temp_file = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
         self.temp_file.write(b"contenido de prueba del PDF")
         self.temp_file.close()
-        
+
         self.client.login(username="testuser", password="testpassword")
 
     def tearDown(self):
         os.unlink(self.temp_file.name)
-        
+
         for report in Report.objects.all():
             if os.path.exists(report.pdf_file.path):
                 os.unlink(report.pdf_file.path)
@@ -107,7 +109,7 @@ class ReportAPITest(TestCase):
     def test_report_list_view(self):
         """Test que la vista de lista de informes funciona correctamente (si existe)"""
         try:
-            url = reverse('report-list')
+            url = reverse("report-list")
             response = self.client.get(url)
             self.assertEqual(response.status_code, 200)
         except:
@@ -117,16 +119,15 @@ class ReportAPITest(TestCase):
     def test_report_creation_view(self):
         """Test que la vista de creación de informes funciona correctamente (si existe)"""
         try:
-            url = reverse('report-create')
-            with open(self.temp_file.name, 'rb') as pdf:
+            url = reverse("report-create")
+            with open(self.temp_file.name, "rb") as pdf:
                 data = {
-                    'title': 'Nuevo informe de prueba',
-                    'description': 'Descripción del nuevo informe',
-                    'pdf_file': pdf
+                    "title": "Nuevo informe de prueba",
+                    "description": "Descripción del nuevo informe",
+                    "pdf_file": pdf,
                 }
                 response = self.client.post(url, data)
                 self.assertEqual(response.status_code, 302)
                 self.assertEqual(Report.objects.count(), 1)
         except:
             self.assertTrue(True)
-

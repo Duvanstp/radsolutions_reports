@@ -24,6 +24,11 @@ jobs:
         pip install isort flake8 black pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
+    - name: Update Makefile for Docker Compose V2
+      run: |
+        # Actualizar el Makefile para usar 'docker compose' en lugar de 'docker-compose'
+        sed -i 's/docker-compose/docker compose/g' makefile
+    
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     
@@ -37,14 +42,14 @@ jobs:
         echo "DEBUG=True" >> .env
         echo "DJANGO_SECRET_KEY='django-insecure-k#cb*25^f8d9js*%rnkjc24_^r^(8#-@$m*8ia1-zn*ytg=#u*'" >> .env
     
-    - name: Build Docker containers
+    - name: Build Docker containers using make
       run: |
-        docker compose build web
-        docker compose up -d db
+        make build
+        make up
     
-    - name: Run linting checks
+    - name: Run linting checks using make
       run: |
-        docker compose run --rm web bash -c "pip install isort flake8 black && isort . --check && black . --check && flake8 ."
+        docker compose run --rm web bash -c "pip install isort flake8 black && make lint"
 
     - name: Wait for PostgreSQL to be ready
       run: |
@@ -62,11 +67,11 @@ jobs:
         done
         echo "PostgreSQL está listo!"
     
-    - name: Run Django tests with SQLite
+    - name: Run Django tests using make
       run: |
-        # Usar SQLite en memoria para los tests en lugar de PostgreSQL
-        docker compose run -e DATABASE_ENGINE=django.db.backends.sqlite3 -e DATABASE_NAME=':memory:' --rm web bash -c "python manage.py test"
+        # Usar SQLite en memoria para los tests
+        docker compose run -e DATABASE_ENGINE=django.db.backends.sqlite3 -e DATABASE_NAME=':memory:' --rm web bash -c "make test"
     
-    - name: Stop containers
+    - name: Stop containers using make
       run: |
-        docker compose down 
+        make down 
