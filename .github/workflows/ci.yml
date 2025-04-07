@@ -28,29 +28,29 @@ jobs:
     
     - name: Build and start Docker containers
       run: |
-        docker-compose up -d db
-        docker-compose build web
+        docker compose up -d db
+        docker compose build web
     
     - name: Install linting tools in container
       run: |
-        docker-compose run --rm web pip install isort flake8 black
+        docker compose run --rm web pip install isort flake8 black
     
     - name: Run Django tests in container
       run: |
-        docker-compose run --rm web python manage.py test
+        docker compose run --rm web python manage.py test
     
     - name: Run isort check in container
       run: |
-        docker-compose run --rm web isort . --check
+        docker compose run --rm web isort . --check
     
     - name: Run black check in container
       run: |
-        docker-compose run --rm web black . --check
+        docker compose run --rm web black . --check
     
     - name: Run flake8 in container
       run: |
-        docker-compose run --rm web flake8 .
+        docker compose run --rm web flake8 .
     
     - name: Stop containers
       run: |
-        docker-compose down 
+        docker compose down 
