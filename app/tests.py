@@ -108,13 +108,13 @@ class ReportAPITest(TestCase):
 
     def test_report_list_view(self):
         """Test que la vista de lista de informes funciona correctamente (si existe)"""
-        url = reverse("report-list")
+        url = reverse("report_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_report_creation_view(self):
         """Test que la vista de creación de informes funciona correctamente (si existe)"""
-        url = reverse("report-create")
+        url = reverse("report_create")
         with open(self.temp_file.name, "rb") as pdf:
             data = {
                 "title": "Nuevo informe de prueba",
