@@ -167,7 +167,7 @@ class ReportAPITest(TestCase):
         response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, 302)
-        
+
         report.refresh_from_db()
         self.assertEqual(report.title, "Título actualizado")
         self.assertEqual(report.description, "Descripción actualizada")
