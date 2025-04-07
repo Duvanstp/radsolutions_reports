@@ -42,13 +42,30 @@ jobs:
         docker compose build web
         docker compose up -d db
     
-    - name: Run Django tests
-      run: |
-        docker compose run --rm web bash -c "python manage.py test"
-    
     - name: Run linting checks
       run: |
         docker compose run --rm web bash -c "pip install isort flake8 black && isort . --check && black . --check && flake8 ."
+
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        echo "Esperando que PostgreSQL esté listo..."
+        # Esperar hasta 30 segundos para que PostgreSQL esté listo
+        timeout=30
+        while ! docker compose exec db pg_isready -h localhost -U radsolutions_user -d radsolutions_db; do
+          timeout=$((timeout-1))
+          if [ $timeout -eq 0 ]; then
+            echo "Timeout esperando a PostgreSQL"
+            exit 1
+          fi
+          echo "Esperando que PostgreSQL esté listo... ${timeout}s restantes"
+          sleep 1
+        done
+        echo "PostgreSQL está listo!"
+    
+    - name: Run Django tests with SQLite
+      run: |
+        # Usar SQLite en memoria para los tests en lugar de PostgreSQL
+        docker compose run -e DATABASE_ENGINE=django.db.backends.sqlite3 -e DATABASE_NAME=':memory:' --rm web bash -c "python manage.py test"
     
     - name: Stop containers
       run: |
