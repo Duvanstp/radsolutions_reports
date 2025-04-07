@@ -47,9 +47,9 @@ jobs:
         make build
         make up
     
-    - name: Run linting checks using make
+    - name: Run linting checks
       run: |
-        docker compose run --rm web bash -c "pip install isort flake8 black && make lint"
+        docker compose run --rm web bash -c "pip install isort flake8 black && isort . --check --profile black && black . --check && flake8 ."
 
     - name: Wait for PostgreSQL to be ready
       run: |
@@ -67,10 +67,10 @@ jobs:
         done
         echo "PostgreSQL está listo!"
     
-    - name: Run Django tests using make
+    - name: Run Django tests
       run: |
         # Usar SQLite en memoria para los tests
-        docker compose run -e DATABASE_ENGINE=django.db.backends.sqlite3 -e DATABASE_NAME=':memory:' --rm web bash -c "make test"
+        docker compose run -e DATABASE_ENGINE=django.db.backends.sqlite3 -e DATABASE_NAME=':memory:' --rm web bash -c "python manage.py test"
     
     - name: Stop containers using make
       run: |
