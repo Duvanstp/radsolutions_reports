@@ -17,7 +17,11 @@ AUTH_USER_MODEL = "app.User"
 ALLOWED_HOSTS = ["*"]
 
 # CSRF configuration for ngrok
-CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app", "http://*.ngrok-free.app", "http://localhost"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ngrok-free.app",
+    "http://*.ngrok-free.app",
+    "http://localhost",
+]
 
 # Application definition
 INSTALLED_APPS = [
