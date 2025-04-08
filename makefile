@@ -21,7 +21,7 @@ down:
 docker-createsuperuser:
 	docker-compose exec web python manage.py createsuperuser
 
-setup: build up docker-makemigrations docker-migrate
+setup: up docker-makemigrations docker-migrate
 	@echo "Sistema iniciado y configurado correctamente."
 	@echo "Para crear un superusuario, ejecuta: make docker-createsuperuser"
 

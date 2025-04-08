@@ -17,7 +17,7 @@ AUTH_USER_MODEL = "app.User"
 ALLOWED_HOSTS = ["*"]
 
 # CSRF configuration for ngrok
-CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app", "http://*.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app", "http://*.ngrok-free.app", "http://localhost"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -113,7 +113,7 @@ USE_I18N = True
 USE_TZ = True
 
 # AWS S3 Settings
-USE_S3 = os.getenv("USE_S3", "False") == "True"
+USE_S3 = os.getenv("USE_S3", "False")
 
 if USE_S3:
     # AWS settings
@@ -143,7 +143,7 @@ if USE_S3:
     # Solo media en S3
     DEFAULT_FILE_STORAGE = "app_server.storage_backends.MediaStorage"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    MEDIA_ROOT = None
+    MEDIA_ROOT = BASE_DIR / "media"  # Mantener una ruta local para compatibilidad
 else:
     STATIC_URL = "static/"
     STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -164,7 +164,7 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_SSL_REDIRECT = True
+    # SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 31536000  # 1 año
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True

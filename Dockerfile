@@ -12,10 +12,14 @@ RUN apt-get update \
 # Instalar dependencias de Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
+    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir django-storages boto3
 
 # Copiar el proyecto
 COPY . .
+
+# Crear directorios necesarios
+RUN mkdir -p /app/media /app/staticfiles
 
 EXPOSE 8000
 
