@@ -12,8 +12,11 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
+import logging
 
 from .models import Report, User
+
+logger = logging.getLogger(__name__)
 
 
 # Forms
@@ -27,7 +30,6 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = ["title", "description", "pdf_file"]
-
 
 # Login view
 class CustomLoginView(LoginView):
@@ -122,7 +124,17 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        try:
+            response = super().form_valid(form)
+            # Verificar si el archivo se guardó correctamente
+            if hasattr(form.instance, 'pdf_file') and form.instance.pdf_file:
+                logger.info(f"Archivo guardado exitosamente: {form.instance.pdf_file.name}")
+                logger.info(f"URL del archivo: {form.instance.pdf_file.url}")
+            return response
+        except Exception as e:
+            logger.error(f"Error al guardar el reporte: {str(e)}")
+            form.add_error(None, f"Error al guardar el reporte: {str(e)}")
+            return self.form_invalid(form)
 
 
 class ReportUpdateView(LoginRequiredMixin, UpdateView):
