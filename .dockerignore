@@ -45,4 +45,7 @@ docker-compose.yml
 *.log
 .DS_Store
 media/
-staticfiles/ 
+staticfiles/
+
+migrations/*
+migrations/
