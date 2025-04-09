@@ -1,3 +1,5 @@
+import logging
+
 from django import forms
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
@@ -12,7 +14,6 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-import logging
 
 from .models import Report, User
 
@@ -30,6 +31,7 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = ["title", "description", "pdf_file"]
+
 
 # Login view
 class CustomLoginView(LoginView):
@@ -66,7 +68,9 @@ def main(request):
 class UserListView(LoginRequiredMixin, ListView):
     model = User
     template_name = "users/user_list.html"
-    context_object_name = "users"
+    context_object_name = (
+        "users"  # es el nombre que usamos en el template para referirse a la vista
+    )
     login_url = "/login/"
 
 
@@ -81,7 +85,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
     model = User
     form_class = UserForm
     template_name = "users/user_form.html"
-    success_url = reverse_lazy("user_list")
+    success_url = reverse_lazy("user_list")  # cuando se crea lo redirije aquí.
     login_url = "/login/"
 
 
@@ -127,8 +131,10 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
         try:
             response = super().form_valid(form)
             # Verificar si el archivo se guardó correctamente
-            if hasattr(form.instance, 'pdf_file') and form.instance.pdf_file:
-                logger.info(f"Archivo guardado exitosamente: {form.instance.pdf_file.name}")
+            if hasattr(form.instance, "pdf_file") and form.instance.pdf_file:
+                logger.info(
+                    f"Archivo guardado exitosamente: {form.instance.pdf_file.name}"
+                )
                 logger.info(f"URL del archivo: {form.instance.pdf_file.url}")
             return response
         except Exception as e:

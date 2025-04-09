@@ -39,27 +39,27 @@ INSTALLED_APPS = [
 
 # Logging configuration
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
         },
-        'app_server': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
+        "app_server": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
         },
     },
 }
@@ -143,7 +143,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DEFAULT_FILE_STORAGE = 'app.mystorage.PDFStorage'
+DEFAULT_FILE_STORAGE = "app.mystorage.PDFStorage"
 
 # Configuración de archivos estáticos y media
 STATIC_URL = "static/"
@@ -165,9 +165,11 @@ AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_AUTH = False  # Para que los archivos tengan URL públicas sin tokens
 
 # (Opcional) Ruta base para tus archivos en el bucket
-AWS_LOCATION = 'media'
+AWS_LOCATION = "media"
 
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+AWS_S3_CUSTOM_DOMAIN = (
+    f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+)
 
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
 
