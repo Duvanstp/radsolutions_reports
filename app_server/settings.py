@@ -171,7 +171,7 @@ AWS_S3_CUSTOM_DOMAIN = (
 )
 
 # Configuración condicional de MEDIA_URL según USE_MOCK_STORAGE
-USE_MOCK_STORAGE = os.getenv('USE_MOCK_STORAGE').lower() == 'true'
+USE_MOCK_STORAGE = os.getenv("USE_MOCK_STORAGE").lower() == "true"
 if USE_MOCK_STORAGE:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = BASE_DIR / "media"
