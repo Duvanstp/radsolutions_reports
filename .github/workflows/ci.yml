@@ -41,7 +41,6 @@ jobs:
         echo "DATABASE_PORT=5432" >> .env
         echo "DEBUG=True" >> .env
         echo "DJANGO_SECRET_KEY='django-insecure-k#cb*25^f8d9js*%rnkjc24_^r^(8#-@$m*8ia1-zn*ytg=#u*'" >> .env
-        echo "USE_S3=False" >> .env
         echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID || 'dummy_key' }}" >> .env
         echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY || 'dummy_secret' }}" >> .env
         echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME || 'dummy_bucket' }}" >> .env
