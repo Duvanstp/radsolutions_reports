@@ -20,3 +20,15 @@ class Report(models.Model):
 
     def __str__(self):
         return f"Report by {self.user.first_name}: {self.title}"
+    
+    def delete(self, *args, **kwargs):
+        if self.pdf_file:
+            storage = self.pdf_file.storage
+            file_name = self.pdf_file.name
+            
+            super().delete(*args, **kwargs)
+            
+            if storage.exists(file_name):
+                storage.delete(file_name)
+        else:
+            super().delete(*args, **kwargs)
