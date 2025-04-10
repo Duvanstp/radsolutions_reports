@@ -13,7 +13,7 @@
                 ¿Estás seguro de que deseas eliminar el reporte <strong>{{ report.title }}</strong>?
             </p>
             <p>Esta acción no se puede deshacer.</p>
-            
+
             <form method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
@@ -22,4 +22,4 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

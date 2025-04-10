@@ -1,4 +1,4 @@
-.PHONY: run migrate makemigrations test clean build up down db web logs restart restart-web restart-db format lint docker-migrate docker-makemigrations docker-createsuperuser docker-migrations docker-create-admin setup
+.PHONY: run migrate makemigrations test clean build up down db web logs restart restart-web restart-db format lint docker-migrate docker-makemigrations docker-createsuperuser docker-migrations docker-create-admin setup install-precommit precommit
 
 run:
 	gunicorn --bind 0.0.0.0:8000 app_server.wsgi:application
@@ -45,3 +45,6 @@ format:
 	black .
 	isort .
 	flake8 .
+
+precommit:
+	pre-commit run --all-files

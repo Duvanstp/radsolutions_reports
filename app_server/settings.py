@@ -142,9 +142,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-DEFAULT_FILE_STORAGE = "app.mystorage.PDFStorage"
-
-# Configuración de archivos estáticos y media
+DEFAULT_FILE_STORAGE = "app.storage.PDFStorage"  # esta variable se necesita para redefinir el storage para que use s3 storage y si no siempre usa el FileSystemStorage y adicionalmente 146-148
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]

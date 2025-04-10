@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Añadir clase active a los elementos del menú según la URL actual
     const currentLocation = window.location.pathname;
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
         if (href === currentLocation || (href === '/' && currentLocation === '')) {
             link.classList.add('active');
         }
     });
-}); 
+});
