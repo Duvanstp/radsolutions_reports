@@ -11,8 +11,7 @@ docker-migrate-create-admin:
 
 setup:
 	docker-compose up -d
-	make docker-migrations
-	make docker-create-admin
+	make docker-migrate-create-admin
 	@echo "Sistema iniciado y configurado correctamente."
 
 lint:
