@@ -49,7 +49,7 @@ jobs:
 
     - name: Build Docker containers using make
       run: |
-        make up
+        make setup
 
     - name: Run linting checks
       run: |

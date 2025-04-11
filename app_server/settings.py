@@ -185,24 +185,24 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/login/"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
         },
     },
-    'loggers': {
+    "loggers": {
         # Suprime logs de Django interno (como consultas SQL)
-        'django': {
-            'handlers': ['console'],
-            'level': 'WARNING',
-            'propagate': False,
+        "django": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
         },
         # Activa logs para todos tus módulos (usa logger = logging.getLogger(__name__))
-        '': {  # El logger raíz
-            'handlers': ['console'],
-            'level': 'INFO',
+        "": {  # El logger raíz
+            "handlers": ["console"],
+            "level": "INFO",
         },
     },
 }
